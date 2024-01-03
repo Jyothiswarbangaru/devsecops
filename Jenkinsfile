@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/Jyothiswarbangaru/devsecops-Related.git'
+                git branch: 'main', url: 'https://github.com/Jyothiswarbangaru/devsecops.git'
             }
         }
         stage('Build docker image') {
