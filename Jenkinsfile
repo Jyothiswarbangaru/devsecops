@@ -26,6 +26,7 @@ pipeline {
         }
         stage('publish docker image') {
             steps {
+                sh "docker tag bangarujyothiswar/netflix bangarujyothiswar:alpine"
                 sh "docker image push bangarujyothiswar/netflix:$BUILD_ID"
             }
         }
