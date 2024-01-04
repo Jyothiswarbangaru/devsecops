@@ -13,21 +13,21 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh "docker image build -t bangarujyothiswar/netflix:$BUILD_ID ."
+                sh "docker image build -t foralpine:$BUILD_ID ."
             }
         }
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/netflix:$BUILD_ID"
+                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/foralpine:$BUILD_ID"
                 }
                 publishHTML([reportName: 'Trivy Vulnerability Report', reportDir: '.', reportFiles: 'trivy-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
         }
         stage('publish docker image') {
             steps {
-                sh "docker tag  netflix:$BUILD_ID bangarujyothiswar/netflix:$BUILD_ID"
-                sh "docker image push bangarujyothiswar/netflix:$BUILD_ID"
+                sh "docker tag alpine:$BUILD_ID bangarujyothiswar/foralpine:$BUILD_ID"
+                sh "docker image push bangarujyothiswar/foralpine:$BUILD_ID"
             }
         }
     }
