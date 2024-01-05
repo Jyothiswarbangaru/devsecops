@@ -1,22 +1,26 @@
 pipeline {
+    agent none 
     stages {
-        agent { label 'docker' }
         stage('clean workspace'){
+            agent { label 'docker' }
             steps{
                 cleanWs()
             }
         }
         stage('Checkout from Git'){
+            agent { label 'docker' }
             steps{
                 git branch: 'main', url: 'https://github.com/Jyothiswarbangaru/devsecops.git'
             }
         }
         stage('Build docker image') {
+            agent { label 'docker' }
             steps {
                 sh "docker image build -t bangarjyothiswar/foralpine:$BUILD_ID ."
             }
         }
         stage('Trivy Scan') {
+            agent { label 'docker' }
             steps {
                 script {
                     sh "trivy image --format json -o trivy-report.json bangarjyothiswar/foralpine:$BUILD_ID"
@@ -25,6 +29,7 @@ pipeline {
             }
         }
         stage('publish docker image') {
+            agent { label 'docker' }
             steps {
                 sh "docker image tag foralpine:$BUILD_ID bangarjyothiswar/foralpine:$BUILD_ID"
                 sh "docker image push bangarujyothiswar/foralpine:$BUILD_ID"
