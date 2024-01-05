@@ -1,6 +1,6 @@
 pipeline {
-    agent any
     stages {
+        agent { label 'docker' }
         stage('clean workspace'){
             steps{
                 cleanWs()
@@ -13,22 +13,31 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh "docker image build -t foralpine:$BUILD_ID ."
+                sh "docker image build -t bangarjyothiswar/foralpine:$BUILD_ID ."
             }
         }
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/foralpine:$BUILD_ID"
+                    sh "trivy image --format json -o trivy-report.json bangarjyothiswar/foralpine:$BUILD_ID"
                 }
                 publishHTML([reportName: 'Trivy Vulnerability Report', reportDir: '.', reportFiles: 'trivy-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
         }
         stage('publish docker image') {
             steps {
-                sh "docker tag alpine:$BUILD_ID bangarujyothiswar/foralpine:$BUILD_ID"
+                sh "docker image tag foralpine:$BUILD_ID bangarjyothiswar/foralpine:$BUILD_ID"
                 sh "docker image push bangarujyothiswar/foralpine:$BUILD_ID"
             }
+        }
+    } 
+    stages {
+        agent { label 'k8s' }
+        stage('k8s cluster') {
+        sh "terraform fmt && terraform init && terraform apply -auto-approve"
+        }
+        stage('kubescape') {
+                
         }
     }
 }
