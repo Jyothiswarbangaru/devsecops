@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
                 sh """
-                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"}]}}}}'
+                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devops:$BUILD_ID"}]}}}}'
                 """
             }
         }
