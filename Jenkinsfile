@@ -19,14 +19,14 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "trivy image --format json -o trivy-report.json docker image build -t bangarujyothiswar/devsecops:latest"
+                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/devsecops:latest"
                 }
                 publishHTML([reportName: 'Trivy Vulnerability Report', reportDir: '.', reportFiles: 'trivy-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
         }
         stage('publish docker image') {
             steps {
-                sh "docker image push bangarujyothiswar/foralpine:latest"
+                sh "docker image push bangarujyothiswar/devsecops:latest"
             }
         }
     }
