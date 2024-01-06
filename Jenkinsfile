@@ -26,7 +26,8 @@ pipeline {
         }
         stage('publish docker image') {
             steps {
-                sh "docker image push bangarujyothiswar/devsecops:latest"
+                sh "docker image tag bangarujyothiswar/devsecops:latest bangarujyothiswar/devops:latest"
+                sh "docker image push bangarujyothiswar/devops:latest"
             }
         }
     }
