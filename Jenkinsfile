@@ -26,6 +26,7 @@ pipeline {
         }
         stage('publish docker image') {
             steps {
+                sh "docker login -u bangarujyothiswar -p Eswar@123 docker.io"
                 sh "docker image tag bangarujyothiswar/devsecops:latest bangarujyothiswar/devops:$BUILD_ID"
                 sh "docker image push bangarujyothiswar/devops:$BUILD_ID"
             }
