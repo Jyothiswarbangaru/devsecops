@@ -1,12 +1,12 @@
 pipeline {
     agent any
     stages {
-        stage('clean workspace'){
+        stage('clean workspace') {
             steps{
                 cleanWs()
             }
         }
-        stage('Checkout from Git'){
+        stage('Checkout from Git') {
             steps{
                 git branch: 'main', url: 'https://github.com/Jyothiswarbangaru/devsecops.git'
             }
@@ -27,8 +27,7 @@ pipeline {
         stage('publish docker image') {
             steps {
                 sh "docker login -u bangarujyothiswar -p Eswar@123 docker.io"
-                sh "docker image tag bangarujyothiswar/devsecops:latest bangarujyothiswar/devops:$BUILD_ID"
-                sh "docker image push bangarujyothiswar/devops:$BUILD_ID"
+                sh "docker image push bangarujyothiswar/devsecops:$BUILD_ID"
             }
         }
         stage('k8s cluster ready and up') {
