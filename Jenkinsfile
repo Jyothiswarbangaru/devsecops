@@ -30,4 +30,17 @@ pipeline {
                 sh "docker image tag bangarujyothiswar/devsecops:latest bangarujyothiswar/devops:$BUILD_ID"
                 sh "docker image push bangarujyothiswar/devops:$BUILD_ID"
             }
+        }
+        stage('k8s cluster ready and up') {
+            steps {
+                sh "eksctl create cluster deployment/k8s/spot_cluster.yaml"
+            }
+        }
+        stage('deploy the netflix code') {
+            steps {
+                sh "kubectl apply -f deployment/k8s/deployment.yaml"
+            }
+        }
+    }
+}
         
