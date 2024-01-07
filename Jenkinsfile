@@ -32,7 +32,7 @@ pipeline {
         }
         stage('k8s cluster ready and up') {
             steps {
-                sh "cd deployment/k8s/ && eksctl create cluster spot_cluster.yaml"
+                sh "cd deployment/k8s/ && eksctl create cluster spotcluster.yaml"
             }
         }
         stage('deploy the netflix code') {
