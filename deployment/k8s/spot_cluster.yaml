@@ -9,4 +9,4 @@ managedNodeGroups:
   - name: spot-1
     spot: true
     ssh:
-      publicKeyName: All Machines #replace with your public key pair
+      publicKeyName: virginiaeswar #replace with your public key pair
