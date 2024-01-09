@@ -32,7 +32,7 @@ pipeline {
         }
         stage('k8s cluster ready and up') {
             steps {
-                sh "cd deployment/k8s/aws && terraform init && terraform fmt && terraform validate && terraform apply -auto-approve"
+                sh "cd deployment/k8s/aws/ && terraform init && terraform fmt && terraform validate && terraform apply -auto-approve"
             }
         }
         stage('deploy the netflix code') {
