@@ -35,11 +35,12 @@ pipeline {
         }
         stage('k8s cluster ready and up') {
             steps {
-                sh "cd deployment/terraform/aws/ && terraform init && terraform fmt && terraform validate && terraform apply -auto-approve -var-file values.tfvars"
+                sh "cd deployment/terraform/aws && terraform init && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform apply -var-file values.tfvars --auto-approve"
             }
         }
         stage('deploy the netflix code') {
             steps {
+                sh 'aws eks update-kubeconfig --name my-eks-cluster'
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
                 sh """
                 kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:$BUILD_ID""}]}}}}'
