@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        THE_BUTLER_SAYS_SO=credentials('Jenkins')
+    }
     stages {
         stage('clean workspace') {
             steps{
@@ -32,9 +35,6 @@ pipeline {
         }
         stage('k8s cluster ready and up') {
             steps {
-                withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
-                // some block
-                }
                 sh "cd deployment/terraform/aws/ && terraform init && terraform fmt && terraform validate && terraform apply -auto-approve -var-file values.tfvars"
             }
         }
