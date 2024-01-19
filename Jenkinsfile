@@ -33,9 +33,9 @@ pipeline {
                 sh "docker image push bangarujyothiswar/devsecops:$BUILD_ID"
             }
         }
-        stage('k8s cluster ready and up') {
+        stage('Ensure kubernetes cluster is up') {
             steps {
-                sh "cd deployment/terraform/aws && terraform init && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform apply -var-file values.tfvars --auto-approve"
+                sh 'cd deployment/terraform/aws && terraform init && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform apply -var-file values.tfvars --auto-approve'
             }
         }
         stage('deploy the netflix code') {
