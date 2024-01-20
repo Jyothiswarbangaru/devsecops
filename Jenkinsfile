@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        THE_BUTLER_SAYS_SO=credentials('Jenkins')
-    }
     stages {
         stage('clean workspace') {
             steps{
