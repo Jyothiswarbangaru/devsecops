@@ -40,14 +40,16 @@ pipeline {
                 sh "aws eks update-kubeconfig --name my-eks-cluster1"
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
                 sh """
-                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:$BUILD_ID""}]}}}}'
+                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:$BUILD_ID"}]}}}}'
                 """
             }
         }
         stage('kubescape scan'){
             steps{
-                sh "/usr/bin kubescape scan -t 40 deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
-                junit "**/TEST-*.xml"
+                script {
+                    sh "/usr/bin/kubescape scan -t 40 deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
+                    junit "**/TEST-*.xml"
+                }
             }
         }
     }
