@@ -1,12 +1,19 @@
 pipeline {
-    agent any
+    agent none
+    environment{
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_cred')
+        AWS_DEFAULT_REGION ='us-east-1'
+        THE_BUTLER_SAYS_SO =credentials('Jenkins')
+    }
     stages {
         stage('clean workspace') {
+            agent{label 'docker'}
             steps{
                 cleanWs()
             }
         }
         stage('Checkout from Git') {
+            agent {label 'docker'}
             steps{
                 git branch: 'main', url: 'https://github.com/Jyothiswarbangaru/devsecops.git'
             }
@@ -17,6 +24,7 @@ pipeline {
             }
         }
         stage('Trivy Scan') {
+            agent {label 'docker'}
             steps {
                 script {
                     sh "trivy image --format json -o trivy-report.json bangarujyothiswar/devsecops:$BUILD_ID"
