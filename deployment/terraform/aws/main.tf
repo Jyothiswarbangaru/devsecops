@@ -1,7 +1,7 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "default"
+  name = "default-vpc"
   cidr = var.vpc_cidr
 
   azs = data.aws_availability_zones.azs.names
@@ -46,7 +46,7 @@ module "eks" {
       max_size     = 2
       desired_size = 1
 
-      instance_type = ["t2.medium"]
+      instance_type = ["t2.small"]
     }
   }
 
