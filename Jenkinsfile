@@ -1,10 +1,5 @@
 pipeline {
-    agent none
-    environment{
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
-        AWS_DEFAULT_REGION ='us-east-1'
-        THE_BUTLER_SAYS_SO =credentials('waytoUserGroup')
-    }
+    agent any
     stages {
         stage('clean workspace') {
             agent{label 'docker'}
