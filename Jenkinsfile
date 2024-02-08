@@ -36,7 +36,7 @@ pipeline {
         stage('publish docker image') {
             agent {label 'docker'}
             steps {
-                sh "docker login -u bangarujyothiswar -p docker.io"
+                sh "docker login -u bangarujyothiswar -p Eswar@123 docker.io"
                 sh "docker image push bangarujyothiswar/devsecops:$BUILD_ID"
             }
         }
