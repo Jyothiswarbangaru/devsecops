@@ -1,7 +1,7 @@
 pipeline {
     agent none
     environment{
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_cred')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
         AWS_DEFAULT_REGION ='us-east-1'
         THE_BUTLER_SAYS_SO =credentials('waytoUserGroup')
     }
