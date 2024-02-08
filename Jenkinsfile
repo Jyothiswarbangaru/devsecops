@@ -36,16 +36,18 @@ pipeline {
         stage('publish docker image') {
             agent {label 'docker'}
             steps {
-                sh "docker login -u bangarujyothiswar -p Eswar@123 docker.io"
+                sh "docker login -u bangarujyothiswar -p docker.io"
                 sh "docker image push bangarujyothiswar/devsecops:$BUILD_ID"
             }
         }
         stage('Ensure kubernetes cluster is up') {
+            agent {label 'kubernetes'}
             steps {
                 sh 'cd deployment/terraform/aws && terraform init && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform destroy -var-file values.tfvars --auto-approve'
             }
         }
         stage('deploy the netflix code') {
+            agent {label 'kubernetes'}
             steps {
                 sh "aws eks update-kubeconfig --name my-eks-cluster1"
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
@@ -55,6 +57,7 @@ pipeline {
             }
         }
         stage('kubescape scan'){
+            agent {label 'kubernetes'}
             steps{
                 script {
                     sh "/usr/bin/kubescape scan -t 40 deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
