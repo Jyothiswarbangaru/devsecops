@@ -3,7 +3,7 @@ pipeline {
     environment{
         DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
         AWS_DEFAULT_REGION ='us-east-1'
-        THE_BUTLER_SAYS_SO =credentials('waytoUserGroup')
+        THE_BUTLER_SAYS_SO =credentials('waytoUserGrou')
     }
     stages {
         stage('clean workspace') {
