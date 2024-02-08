@@ -19,6 +19,7 @@ pipeline {
             }
         }
         stage('Build docker image') {
+            agent {label 'docker'}
             steps {
                 sh "docker image build -t bangarujyothiswar/devsecops:$BUILD_ID ."
             }
