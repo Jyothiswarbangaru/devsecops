@@ -43,7 +43,7 @@ pipeline {
         stage('Ensure kubernetes cluster is up') {
             agent {label 'kubernetes'}
             steps {
-                sh 'cd deployment/terraform/aws && terraform init -reconfigure && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform destroy -var-file values.tfvars --auto-approve'
+                sh 'cd deployment/terraform/aws && terraform init -reconfigure && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform apply -var-file values.tfvars --auto-approve'
             }
         }
         stage('deploy the netflix code') {
