@@ -43,13 +43,13 @@ pipeline {
         stage('Ensure kubernetes cluster is up') {
             agent {label 'kubernetes'}
             steps {
-                sh 'cd deployment/terraform/aws && terraform init && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform destroy -var-file values.tfvars --auto-approve'
+                sh 'cd deployment/terraform/aws && terraform init -reconfigure && terraform fmt && terraform validate && terraform plan -var-file values.tfvars && terraform destroy -var-file values.tfvars --auto-approve'
             }
         }
         stage('deploy the netflix code') {
             agent {label 'kubernetes'}
             steps {
-                sh "aws eks update-kubeconfig --name my-eks-cluster1"
+                sh "aws eks update-kubeconfig --name my-eks-cluster"
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
                 sh """
                 kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:$BUILD_ID"}]}}}}'
