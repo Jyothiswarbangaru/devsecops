@@ -21,14 +21,14 @@ pipeline {
         stage('Build docker image') {
             agent {label 'docker'}
             steps {
-                sh "docker image build -t bangarujyothiswar/devsecops:$BUILD_ID ."
+                sh "docker image build -t bangarujyothiswar/devsecops:v1 ."
             }
         }
         stage('Trivy Scan') {
             agent {label 'docker'}
             steps {
                 script {
-                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/devsecops:$BUILD_ID"
+                    sh "trivy image --format json -o trivy-report.json bangarujyothiswar/devsecops:v1"
                 }
                 publishHTML([reportName: 'Trivy Vulnerability Report', reportDir: '.', reportFiles: 'trivy-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
@@ -52,7 +52,7 @@ pipeline {
                 sh "aws eks update-kubeconfig --name my-eks-cluster"
                 sh "kubectl apply -f deployment/k8s/deployment.yaml --validate=false"
                 sh """
-                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:$BUILD_ID"}]}}}}'
+                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"bangarujyothiswar/devsecops:v1"}]}}}}'
                 """
             }
         }
